@@ -90,6 +90,8 @@ svg text{fill:var(--mut);font-size:calc(11px*var(--z,1));font-family:inherit}
 #lock input{margin-top:8px}.pin4{text-align:center;letter-spacing:6px;font-size:16px}
 #rerr{color:#ff8a80;min-height:22px;font-size:13px}
 button:disabled{opacity:.4;cursor:default}
+a.btn{display:inline-block;background:var(--acc);color:var(--accT);font-weight:800;padding:11px 18px;border-radius:6px;text-decoration:none}
+.lk2{color:var(--acc);font-weight:800;text-decoration:underline}
 </style>
 </head>
 <body>
@@ -127,6 +129,7 @@ button:disabled{opacity:.4;cursor:default}
  <button class="nav" data-v="hist">🕘 Historique</button>
  <button class="nav" data-v="prof">👤 Profil</button>
  <button class="nav" data-v="set">⚙️ Paramètres</button>
+ <button class="nav" data-v="support">💬 Support</button>
  <button class="nav" data-v="admin">🛡️ ADMIN</button>
  <div class="sp"></div>
  <div class="sub" id="cpill" style="padding:6px 12px;cursor:pointer">⚪ Non connecté</div>
@@ -176,6 +179,17 @@ button:disabled{opacity:.4;cursor:default}
 <div style="margin-top:10px"><button id="add">Ajouter le trade</button></div>
 <div class="ok" id="addmsg"></div>
 </div>
+</section>
+
+<!-- SUPPORT -->
+<section class="view" id="v-support">
+ <div class="card"><h2>Support</h2>
+  <div class="sub" style="margin-bottom:12px">Une question, un problème ou une idée ? Écris-moi directement.</div>
+  <a class="btn" id="wa" href="https://wa.me/261344704476?text=Bonjour%2C%20j%E2%80%99ai%20besoin%20d%E2%80%99aide%20avec%20l%E2%80%99application%20JOEL%E2%80%99S%20TRADE." target="_blank" rel="noopener">💬 Écrire sur WhatsApp</a>
+  <div style="margin-top:14px"><div class="sub">WhatsApp</div><b>+261 34 47 044 76</b></div>
+  <div style="margin-top:12px"><div class="sub">Facebook</div><a class="lk2" id="fb" href="https://www.facebook.com/share/18NL8eesv6/" target="_blank" rel="noopener">Joelson Rodrigœs</a></div>
+  <div class="sub" style="margin-top:12px">Le bouton ouvre la conversation dans ton application WhatsApp, avec un message déjà prêt. Le nom Facebook ouvre mon profil.</div>
+ </div>
 </section>
 
 <!-- ADMIN -->
@@ -729,9 +743,9 @@ async function admLoad(){const m=$('admmsg');
  m.textContent='Vérification…';
  try{const r=await sbReq('/rest/v1/rpc/admin_stats',{m:'POST',b:{p_code:admCode}});
   if(r&&r.error){m.textContent=r.error==='locked'?'Trop d’essais : réessaie dans 15 minutes.':'Code incorrect.';admCode=null;$('adcode').value='';return}
-  const rows=r.rows||[],tot=rows.reduce((a,x)=>a+x.bytes,0),LIM=524288000,pc=Math.min(100,r.db_bytes/LIM*100);
-  $('admsum').innerHTML=kp([['Utilisateurs avec cloud',r.users_cloud],['Comptes inscrits',r.users_total],['Données des journaux',byt(tot)],['Base de données',byt(r.db_bytes)+' / 500 Mo']]);
-  $('admbar').innerHTML=`<div class="sub">Espace du plan gratuit utilisé : ${f(pc,1)} %</div><div style="height:8px;border-radius:4px;background:var(--line);overflow:hidden;margin-top:4px"><div style="height:100%;width:${pc}%;background:${pc>80?'var(--loss)':'var(--acc)'}"></div></div>`;
+  const rows=r.rows||[],tot=rows.reduce((a,x)=>a+x.bytes,0),LIM=524288000,sys=Math.max(0,r.db_bytes-tot),pj=tot/LIM*100,ps=sys/LIM*100,pt=Math.min(100,r.db_bytes/LIM*100);
+  $('admsum').innerHTML=kp([['Utilisateurs avec cloud',r.users_cloud],['Comptes inscrits',r.users_total],['Données des journaux',byt(tot)],['Système Supabase (hors journaux)',byt(sys)],['Total base de données',byt(r.db_bytes)+' / 500 Mo']]);
+  $('admbar').innerHTML=`<div class="sub">Espace du plan gratuit utilisé : ${f(pt,1)} % (${byt(r.db_bytes)} sur 500 Mo)</div><div style="display:flex;height:10px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:6px"><div style="width:${tot?Math.max(pj,.4):0}%;background:var(--acc)"></div><div style="width:${ps}%;background:var(--mut)"></div></div><div class="sub" style="margin-top:6px"><span style="color:var(--acc)">■</span> Journaux : ${byt(tot)} (${f(pj,2)} %) &nbsp; <span style="color:var(--mut)">■</span> Système Supabase : ${byt(sys)} (${f(ps,1)} %)</div><div class="sub" style="margin-top:4px">Le système (comptes, connexions, outils internes) existe dès la création du projet et grossit très peu. Seuls les journaux augmentent avec les utilisateurs.</div>`;
   $('admtab').innerHTML=rows.length?`<table style="min-width:520px"><tr><th>E-mail</th><th>Trades</th><th>Stockage</th><th>Dernière synchro</th></tr>${rows.map(x=>`<tr><td>${esc(x.email||'(compte supprimé)')}</td><td>${x.trades}</td><td>${byt(x.bytes)}</td><td>${x.updated_at?new Date(x.updated_at).toLocaleString('fr-FR'):'–'}</td></tr>`).join('')}</table>`:'<div class="sub">Aucun utilisateur n’a encore synchronisé.</div>';
   $('admform').style.display='none';$('admres').style.display='';m.textContent=''}
  catch(e){admCode=null;m.textContent=/admin_stats/.test(e.message)?'Fonction ADMIN introuvable : exécute le script SQL ADMIN dans Supabase.':'Erreur : '+e.message}}
