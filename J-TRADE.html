@@ -150,6 +150,8 @@ html.desk #v-support .card,html.desk #v-admin .card{max-width:860px}
 html.desk #v-dash>.c-chart{grid-column:span 7}html.desk #v-dash>.c-sets{grid-column:span 5}html.desk #dk{grid-template-columns:repeat(6,minmax(0,1fr))}
 html.desk #v-perf>.card:nth-child(1){grid-column:span 4}html.desk #v-perf>.card:nth-child(2){grid-column:span 8}
 }
+.ann{border-left:4px solid var(--acc);background:linear-gradient(90deg,rgba(212,175,55,.14),transparent 70%),var(--card)}
+.annb{white-space:pre-wrap;word-break:break-word;margin-top:4px}
 </style>
 </head>
 <body>
@@ -201,6 +203,7 @@ html.desk #v-perf>.card:nth-child(1){grid-column:span 4}html.desk #v-perf>.card:
 <header id="dtop"><div><div class="sub" id="ddate"></div><h1 id="dtitle">Dashboard</h1></div><div class="sp"></div><span class="pill" id="dbadge">⚪ Non connecté</span><button id="dnew">➕ Nouveau trade</button><div class="av avs" id="dav" role="button" tabindex="0" aria-label="Ouvrir mon profil" style="cursor:pointer"></div></header>
 <!-- DASHBOARD -->
 <section class="view g2 on" id="v-dash">
+ <div class="card ann full" id="ann" style="display:none"><div class="row" style="justify-content:space-between;align-items:flex-start;flex-wrap:nowrap"><b>📢 Annonce</b><button class="g xs" id="annx" aria-label="Masquer l’annonce">✕</button></div><div id="annt" style="font-weight:800;margin-top:6px"></div><div class="annb" id="annb"></div><div class="sub" id="annd" style="margin-top:6px"></div></div>
  <div class="hero" id="hero"><div><h1>JOEL’S TRADE</h1><div class="sub" id="hello"></div></div></div>
  <div id="alerts" class="full"></div>
  <div class="card c-plan"><h2>Mon plan de trading</h2>
@@ -262,6 +265,12 @@ html.desk #v-perf>.card:nth-child(1){grid-column:span 4}html.desk #v-perf>.card:
    <div class="grid" id="admsum"></div>
    <div id="admbar" style="margin:12px 0"></div>
    <div class="sc" id="admtab"></div>
+   <div style="margin-top:18px;border-top:1px solid var(--line);padding-top:14px"><h2 style="font-size:16px">Annonce pour tous les utilisateurs</h2>
+    <div class="sub" id="admann" style="margin-bottom:8px"></div>
+    <label>Titre (facultatif)<input id="antt" maxlength="120"></label>
+    <label style="margin-top:8px">Message<textarea id="anbd" rows="4" maxlength="2000"></textarea></label>
+    <div class="row" style="margin-top:10px"><button id="anpub">Publier l’annonce</button><button class="g" id="anrm">Retirer l’annonce</button></div>
+    <div class="ok" id="anmsg"></div></div>
    <div class="row" style="margin-top:12px"><button class="g" id="adref">Actualiser</button><button class="g" id="adlk">Verrouiller ADMIN</button></div>
   </div>
  </div>
@@ -823,10 +832,34 @@ let ipr=null;
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();ipr=e;$('instb').style.display=''});
 $('instb').onclick=async()=>{if(!ipr)return;ipr.prompt();try{await ipr.userChoice}catch(e){}ipr=null;$('instb').style.display='none'};
 addEventListener('appinstalled',()=>{$('instb').style.display='none';note('Application installée ✔')});
-if(matchMedia('(display-mode: standalone)').matches||navigator.standalone){$('insth').textContent='L’application est installée et ouverte en plein écran.';$('instn').style.display='none'}
+if((window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone){$('insth').textContent='L’application est installée et ouverte en plein écran.';$('instn').style.display='none'}
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&location.hostname.indexOf('claude')<0)navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+let ann=null;
+function annShow(){const c=$('ann');let x=null;try{x=localStorage.getItem('hlzannx')}catch(e){}
+ if(!ann||String(ann.id)===x){c.style.display='none'}else{$('annt').textContent=ann.title||'';$('annt').style.display=ann.title?'':'none';$('annb').textContent=ann.body||'';$('annd').textContent=new Date(ann.created_at).toLocaleString('fr-FR');c.style.display=''}
+ $('admann').textContent=ann?'Annonce active : '+(ann.title?ann.title+' — ':'')+(ann.body||'').slice(0,90)+((ann.body||'').length>90?'…':''):'Aucune annonce active.'}
+async function annLoad(){
+ try{const r=await fetch(SBDEF.url+'/rest/v1/announcements?select=id,title,body,created_at&active=eq.true&order=created_at.desc&limit=1',{headers:{apikey:SBDEF.key}});
+  if(!r.ok)throw 0;const j=await r.json();ann=j[0]||null;try{localStorage.setItem('hlzann',JSON.stringify(ann))}catch(e){}}
+ catch(e){try{ann=JSON.parse(localStorage.getItem('hlzann')||'null')}catch(x){ann=null}}
+ annShow()}
+$('annx').onclick=()=>{if(ann)try{localStorage.setItem('hlzannx',String(ann.id))}catch(e){}annShow()};
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)annLoad()});
+setInterval(()=>{if(!document.hidden)annLoad()},120000);
+async function annSend(on){const m=$('anmsg');if(!admCode){m.textContent='Rouvre la section ADMIN.';return}
+ const t=$('antt').value.trim(),b=$('anbd').value.trim();
+ if(on&&!t&&!b){m.textContent='Écris un titre ou un message.';return}
+ m.textContent='Envoi…';
+ try{const r=await sbReq('/rest/v1/rpc/admin_announce',{m:'POST',b:{p_code:admCode,p_title:t,p_body:b,p_active:on}});
+  if(r&&r.error){m.textContent=r.error==='locked'?'Trop d’essais : réessaie dans 15 minutes.':'Code incorrect.';return}
+  m.textContent=on?'Annonce publiée ✔ Elle s’affiche chez tous les utilisateurs.':'Annonce retirée ✔';
+  if(on){$('antt').value='';$('anbd').value=''}
+  try{localStorage.removeItem('hlzannx')}catch(e){}await annLoad()}
+ catch(e){m.textContent=/admin_announce/.test(e.message)?'Fonction annonce introuvable : exécute le script SQL « Annonces » dans Supabase.':'Erreur : '+e.message}}
+$('anpub').onclick=()=>annSend(true);$('anrm').onclick=()=>annSend(false);
 (function(){const n=new Date();$('date').value=n.toISOString().slice(0,10);$('time').value=n.toTimeString().slice(0,5)})();
-render();rqInfo();fileInit();sbUI();sbSync();topSet('dash');
+render();rqInfo();fileInit();sbUI();sbSync();topSet('dash');annLoad();
 try{if(sessionStorage.getItem('hlzu')==='1')$('lock').style.display='none';const sv=sessionStorage.getItem('hlzv');if(sv&&$('v-'+sv))go(sv)}catch(e){}
 </script>
 </body>
