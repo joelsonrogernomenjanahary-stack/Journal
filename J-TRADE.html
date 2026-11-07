@@ -3,7 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>try{if(!/Android.*Mobile|iPhone|iPod|Windows Phone|webOS|BlackBerry|Opera Mini|Mobile/i.test(navigator.userAgent))document.documentElement.classList.add("desk")}catch(e){}</script>
 <title>JOEL’S TRADE</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b1226">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="JOEL’S TRADE">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#eef1f7;--card:#fff;--side:#fbf7ea;--ink:#16233f;--mut:#5d6a86;--line:#d9dfeb;--win:#0f8a6a;--loss:#c8372d;--acc:#9a7b12;--accT:#fff;--warn:#b7791f;color-scheme:light}
@@ -92,6 +99,57 @@ svg text{fill:var(--mut);font-size:calc(11px*var(--z,1));font-family:inherit}
 button:disabled{opacity:.4;cursor:default}
 a.btn{display:inline-block;background:var(--acc);color:var(--accT);font-weight:800;padding:11px 18px;border-radius:6px;text-decoration:none}
 .lk2{color:var(--acc);font-weight:800;text-decoration:underline}
+#dtop{display:none}
+.pill{padding:6px 12px;border:1px solid var(--line);border-radius:999px;background:var(--card);font-size:calc(13px*var(--z,1));cursor:pointer;white-space:nowrap}
+@media(min-width:821px){
+html.desk body{font-size:calc(16px*var(--z,1))}
+html.desk aside{width:calc(264px*var(--z,1));padding:calc(22px + env(safe-area-inset-top,0px)) 14px 16px;gap:3px;background:linear-gradient(180deg,var(--side),var(--bg))}
+html.desk .brand{font-size:21px;padding:4px 10px 12px}
+html.desk #avside{padding:6px 10px 16px!important;gap:12px!important}
+html.desk .nav{padding:11px 14px;border-radius:10px;font-size:calc(14.5px*var(--z,1));transition:background .15s,color .15s}
+html.desk .nav:hover:not(.on){background:rgba(127,127,127,.14)}
+html.desk .nav.on{box-shadow:0 4px 14px rgba(0,0,0,.28)}
+html.desk main{margin-left:calc(264px*var(--z,1));padding:0 clamp(20px,3vw,56px) 56px}
+html.desk .view,html.desk #dtop{max-width:1560px;margin-left:auto;margin-right:auto}
+html.desk #dtop{display:flex;align-items:center;gap:14px;position:sticky;top:0;z-index:12;background:var(--bg);padding:20px 0 16px;margin-bottom:4px}
+html.desk #dtitle{margin:0;font-size:calc(26px*var(--z,1))}
+html.desk #ddate{text-transform:capitalize}
+html.desk .card{border-radius:14px;padding:22px 24px;box-shadow:0 1px 2px rgba(0,0,0,.12),0 10px 30px rgba(0,0,0,.08)}
+html.desk h2{font-size:calc(18px*var(--z,1));margin-bottom:16px}
+html.desk .grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+html.desk input,html.desk select,html.desk textarea{padding:10px 12px;border-radius:8px}
+html.desk button{border-radius:8px}
+html.desk button:not(.nav):not(.xs):not(.lnk){padding:10px 18px}
+html.desk button:not(:disabled):hover{filter:brightness(1.1)}
+html.desk table{min-width:0!important;font-size:calc(13.5px*var(--z,1))}
+html.desk th{padding:10px 9px;font-size:calc(12px*var(--z,1));text-transform:uppercase;letter-spacing:.04em}
+html.desk td{padding:10px 9px}
+html.desk tr:hover td{background:rgba(212,175,55,.08)}
+html.desk svg{min-width:0!important}
+html.desk .calc{font-size:calc(15px*var(--z,1));padding:12px 16px;border-left:4px solid var(--acc)}
+html.desk ::-webkit-scrollbar{width:10px;height:10px}
+html.desk ::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+html.desk ::-webkit-scrollbar-track{background:transparent}
+html.desk .hero{min-height:260px;background-position:center 58%}
+html.desk #dlast td:last-child,html.desk #hist td:nth-last-child(2):not([colspan]){white-space:normal;min-width:200px}
+html.desk .hero h1{font-size:calc(36px*var(--z,1))}
+html.desk #v-dash.on,html.desk #v-perf.on{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;align-items:start}
+html.desk #v-dash>*,html.desk #v-perf>*{grid-column:span 12;margin:0}
+html.desk #v-dash>.c-sets{order:1}html.desk #v-dash>.c-last{order:2}
+html.desk .plan{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+html.desk .plan div{padding:10px 14px;border-radius:10px;font-size:calc(14px*var(--z,1))}
+html.desk #dk,html.desk #kpis,html.desk #admsum{grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+html.desk .kpi{background:var(--bg);border-left-width:4px;border-radius:10px;padding:12px 14px}
+html.desk .kpi b{font-size:calc(24px*var(--z,1))}
+html.desk #v-prof.on,html.desk #v-set.on{display:grid;grid-template-columns:repeat(auto-fit,minmax(460px,1fr));gap:18px;align-items:start}
+html.desk #v-prof>.card,html.desk #v-set>.card{margin:0}
+html.desk #v-new .card,html.desk #v-imp .card{max-width:1180px}
+html.desk #v-support .card,html.desk #v-admin .card{max-width:860px}
+}
+@media(min-width:1100px){
+html.desk #v-dash>.c-chart{grid-column:span 7}html.desk #v-dash>.c-sets{grid-column:span 5}html.desk #dk{grid-template-columns:repeat(6,minmax(0,1fr))}
+html.desk #v-perf>.card:nth-child(1){grid-column:span 4}html.desk #v-perf>.card:nth-child(2){grid-column:span 8}
+}
 </style>
 </head>
 <body>
@@ -140,17 +198,18 @@ a.btn{display:inline-block;background:var(--acc);color:var(--accT);font-weight:8
 <div class="bar"><button class="g" id="menu" aria-label="Menu">☰</button><b class="brand">JOEL’S TRADE</b><span class="sp"></span><span class="sub" id="cbadge" style="cursor:pointer;margin-right:8px">⚪ Non connecté</span><div class="av avs" id="avbar" role="button" tabindex="0" aria-label="Ouvrir mon profil" style="width:34px;height:34px;font-size:calc(14px*var(--z,1));cursor:pointer"></div></div>
 
 <main>
+<header id="dtop"><div><div class="sub" id="ddate"></div><h1 id="dtitle">Dashboard</h1></div><div class="sp"></div><span class="pill" id="dbadge">⚪ Non connecté</span><button id="dnew">➕ Nouveau trade</button><div class="av avs" id="dav" role="button" tabindex="0" aria-label="Ouvrir mon profil" style="cursor:pointer"></div></header>
 <!-- DASHBOARD -->
 <section class="view g2 on" id="v-dash">
  <div class="hero" id="hero"><div><h1>JOEL’S TRADE</h1><div class="sub" id="hello"></div></div></div>
  <div id="alerts" class="full"></div>
- <div class="card"><h2>Mon plan de trading</h2>
+ <div class="card c-plan"><h2>Mon plan de trading</h2>
  <div class="plan" id="planBox"></div></div>
- <div class="card"><h2>Résumé</h2><div class="grid" id="dk"></div>
+ <div class="card c-sum"><h2>Résumé</h2><div class="grid" id="dk"></div>
   <div style="margin-top:12px"><button data-go="new">Ajouter un trade</button> <button class="g" data-go="perf">Voir la performance</button></div></div>
- <div class="card full"><h2>Évolution du capital</h2><div class="sc"><svg id="chart0" viewBox="0 0 700 270" width="100%" style="min-width:480px" role="img" aria-label="Évolution du capital"></svg></div></div>
- <div class="card full"><h2>Derniers trades</h2><div class="sc" id="dlast"></div></div>
- <div class="card full"><h2>Meilleurs setups</h2><div class="sc" id="dset"></div></div>
+ <div class="card full c-chart"><h2>Évolution du capital</h2><div class="sc"><svg id="chart0" viewBox="0 0 700 270" width="100%" style="min-width:480px" role="img" aria-label="Évolution du capital"></svg></div></div>
+ <div class="card full c-last"><h2>Derniers trades</h2><div class="sc" id="dlast"></div></div>
+ <div class="card full c-sets"><h2>Meilleurs setups</h2><div class="sc" id="dset"></div></div>
 </section>
 
 <!-- NOUVEAU TRADE -->
@@ -280,6 +339,10 @@ a.btn{display:inline-block;background:var(--acc);color:var(--accT);font-weight:8
  <div class="card"><h2>Plan de trading</h2><div class="sub" style="margin-bottom:10px">Le plan par défaut reste disponible. Modifie les lignes pour afficher ton propre plan sur le Dashboard.</div><div id="planEd"></div>
   <div class="row" style="margin-top:10px"><button class="g" id="padd">Ajouter une ligne</button><button id="psv">Enregistrer mon plan</button><button class="g" id="prs">Revenir au plan par défaut</button></div><div class="ok" id="pm"></div></div>
  <div class="card"><h2>Formulaire Nouveau trade</h2><div class="sub" style="margin-bottom:10px">Coche ce qui doit s’afficher, et personnalise tes setups, conditions d’entrée et éléments de psychologie.</div><div id="cfgEd"></div></div>
+ <div class="card"><h2>Application</h2>
+  <div class="sub" id="insth">Installe JOEL’S TRADE comme une vraie application : icône sur l’écran d’accueil, plein écran et ouverture rapide.</div>
+  <div style="margin-top:12px"><button id="instb" style="display:none">📲 Installer l’application</button></div>
+  <div class="sub" id="instn" style="margin-top:8px">Si le bouton n’apparaît pas : dans Chrome, menu ⋮ puis « Installer l’application ». Sur iPhone (Safari) : Partager puis « Sur l’écran d’accueil ». L’installation demande la version hébergée en ligne (GitHub), avec les fichiers manifest.json, sw.js et les icônes.</div></div>
  <div class="card"><h2>Affichage</h2><label>Thème<select id="th"><option value="dark">Sombre</option><option value="light">Clair</option><option value="auto">Automatique</option></select></label>
   <label style="margin-top:10px">Taille du texte<select id="fsz"><option value="0.85">Très petit (85 %)</option><option value="0.92">Petit (92 %)</option><option value="1">Normal (100 %)</option><option value="1.15">Grand (115 %)</option><option value="1.3">Très grand (130 %)</option><option value="1.5">Énorme (150 %)</option></select></label>
   <div class="sub" style="margin-top:8px">Le changement s’applique tout de suite et est gardé sur cet appareil.</div></div>
@@ -340,7 +403,7 @@ $('pchg').onclick=()=>{const m=$('pinmsg');
 
 /* Navigation */
 function go(v){document.querySelectorAll('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));
- document.querySelectorAll('.nav[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));closeNav();scrollTo(0,0);try{sessionStorage.setItem('hlzv',v)}catch(e){}if(v!=='admin')admLock()}
+ document.querySelectorAll('.nav[data-v]').forEach(b=>b.classList.toggle('on',b.dataset.v===v));closeNav();scrollTo(0,0);try{sessionStorage.setItem('hlzv',v)}catch(e){}if(v!=='admin')admLock();topSet(v)}
 document.querySelectorAll('.nav[data-v]').forEach(b=>b.onclick=()=>go(b.dataset.v));
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
 const closeNav=()=>{$('side').classList.remove('open');$('bd').classList.remove('on')};
@@ -449,7 +512,8 @@ function chart(id,p,o){o=o||0;
  s+=`<path d="${path} L${X(pts.length-1)} ${Hh-B} L${L} ${Hh-B}Z" fill="${col}" opacity=".12"/><path d="${path}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>`;
  pts.forEach((q,i)=>{if(pts.length<=60)s+=`<circle cx="${X(i)}" cy="${Y(q.v)}" r="4" fill="${i&&q.d<0?'var(--loss)':col}"><title>${q.w||q.l} : ${mon(q.v)} (${q.d>=0?'+':''}${f(q.d/z)})</title></circle>`});
  const step=Math.ceil(pts.length/6);
- pts.forEach((q,i)=>{if(i%step===0||i===pts.length-1)s+=`<text x="${X(i)}" y="${Hh-12}" text-anchor="${i===0?'start':i===pts.length-1?'end':'middle'}">${q.l.slice(0,12)}</text>`});
+ const dsk=document.documentElement.classList.contains('desk');
+ pts.forEach((q,i)=>{if((i%step===0&&(!dsk||i===0||pts.length-1-i>=step*.8))||i===pts.length-1)s+=`<text x="${X(i)}" y="${Hh-12}" text-anchor="${i===0?'start':i===pts.length-1?'end':'middle'}">${q.l.slice(0,12)}</text>`});
  svg.innerHTML=s;return pts;
 }
 let poff=0;
@@ -590,8 +654,8 @@ function sbUI(){if(SBDEF.url)$('sburl').closest('label').style.display=$('sbkey'
  const on=!!(SB&&SB.access);$('sbout').style.display=on?'none':'';$('sbon').style.display=on?'':'none';
  if(SB){$('sburl').value=SB.url||'';$('sbkey').value=SB.key||'';$('sbem').value=SB.email||''}
  sbBadge();if(on)sbst('Connecté : '+SB.email)}
-function sbBadge(){const on=!!(SB&&SB.access),t=on?'🟢 Connecté':'⚪ Non connecté';['cpill','cbadge'].forEach(i=>$(i).textContent=t);$('sbbadge').textContent=on?t+' · '+SB.email:t}
-['cpill','cbadge','avbar','avside'].forEach(i=>{const e=$(i);e.onclick=()=>go('prof');e.onkeydown=k=>{if(k.key==='Enter')go('prof')}});
+function sbBadge(){const on=!!(SB&&SB.access),t=on?'🟢 Connecté':'⚪ Non connecté';['cpill','cbadge','dbadge'].forEach(i=>$(i).textContent=t);$('sbbadge').textContent=on?t+' · '+SB.email:t}
+['cpill','cbadge','avbar','avside','dbadge','dav'].forEach(i=>{const e=$(i);e.onclick=()=>go('prof');e.onkeydown=k=>{if(k.key==='Enter')go('prof')}});
 async function sbAuth(up){
  const url=SBDEF.url||$('sburl').value.trim().replace(/\/+$/,''),key=SBDEF.key||$('sbkey').value.trim(),em=$('sbem').value.trim(),pw=$('sbpw').value;
  if(!url||!key||!em||pw.length<6){note('Renseigne l’URL, la clé, l’e-mail et un mot de passe de 6 caractères minimum.');return}
@@ -752,8 +816,17 @@ async function admLoad(){const m=$('admmsg');
 $('adgo').onclick=()=>{admCode=$('adcode').value.trim();if(!admCode){$('admmsg').textContent='Entre le code ADMIN.';return}admLoad()};
 $('adcode').onkeydown=e=>{if(e.key==='Enter')$('adgo').click()};
 $('adref').onclick=()=>{if(admCode)admLoad()};$('adlk').onclick=admLock;
+function topSet(v){const nb=document.querySelector('.nav[data-v="'+v+'"]');$('dtitle').textContent=nb?nb.textContent.replace(/^[^\p{L}\d]+/u,'').trim():'';$('ddate').textContent=new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
+$('dnew').onclick=()=>go('new');
+
+let ipr=null;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();ipr=e;$('instb').style.display=''});
+$('instb').onclick=async()=>{if(!ipr)return;ipr.prompt();try{await ipr.userChoice}catch(e){}ipr=null;$('instb').style.display='none'};
+addEventListener('appinstalled',()=>{$('instb').style.display='none';note('Application installée ✔')});
+if(matchMedia('(display-mode: standalone)').matches||navigator.standalone){$('insth').textContent='L’application est installée et ouverte en plein écran.';$('instn').style.display='none'}
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&location.hostname.indexOf('claude')<0)navigator.serviceWorker.register('sw.js').catch(()=>{});
 (function(){const n=new Date();$('date').value=n.toISOString().slice(0,10);$('time').value=n.toTimeString().slice(0,5)})();
-render();rqInfo();fileInit();sbUI();sbSync();
+render();rqInfo();fileInit();sbUI();sbSync();topSet('dash');
 try{if(sessionStorage.getItem('hlzu')==='1')$('lock').style.display='none';const sv=sessionStorage.getItem('hlzv');if(sv&&$('v-'+sv))go(sv)}catch(e){}
 </script>
 </body>
