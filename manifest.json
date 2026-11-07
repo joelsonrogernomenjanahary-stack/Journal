@@ -1,9 +1,9 @@
 {
   "name": "JOEL’S TRADE — Journal de trading",
-  "short_name": "JOEL’S TRADE",
+  "short_name": "JOURNAL",
   "description": "Journal de trading HLZ : trades, statistiques, plan et synchronisation.",
   "lang": "fr",
-  "start_url": "./JOELS-TRADE.html",
+  "start_url": "./J-TRADE.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#0b1226",
